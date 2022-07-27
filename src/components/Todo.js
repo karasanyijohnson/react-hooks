@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios'
 
 const Todo = props => {
     const [todoName, setTodoName] = useState('');
@@ -14,6 +15,13 @@ const Todo = props => {
 
     const addTodoHundler = () => {
         setTodoList(todoList.concat(todoName))
+        axios.post('https://test-2f0e9-default-rtdb.firebaseio.com/todos.json', {name: todoName})
+        .then(res=>{
+            console.log(res)
+        })
+        .catch(err=>{
+            console.log(err)
+        })
         // setTodoState({
         //     userInput:todoState.userInput,
         //    todoList:todoState.todoList.concat(todoState.userInput) 
