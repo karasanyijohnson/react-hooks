@@ -4,6 +4,7 @@ import axios from 'axios'
 const Todo = props => {
     const [todoName, setTodoName] = useState('');
     const [todoList, setTodoList] = useState([])
+    const [submittedTodo, setSubmittedTodo]= useState(null)
     // const [todoState, setTodoState] = useState({userInput:'', todoList:[]})
     useEffect(()=>{
         axios.get('https://test-2f0e9-default-rtdb.firebaseio.com/todos.json')
@@ -29,6 +30,12 @@ const mouseMoveHandler= event=>{
             document.removeEventListener('mousemove', mouseMoveHandler)
         }
     },[])
+    useEffect(
+        ()=>{
+       if(submittedTodo){
+        setTodoList(todoList.concat(submittedTodo))
+       }
+    },[submittedTodo]);
     const inputChangeHandler = (event) => {
         setTodoName(event.target.value)
         // setTodoState({
@@ -38,10 +45,13 @@ const mouseMoveHandler= event=>{
     }
 
     const addTodoHundler = () => {
-        setTodoList(todoList.concat(todoName))
         axios.post('https://test-2f0e9-default-rtdb.firebaseio.com/todos.json', {name: todoName})
         .then(res=>{
-            console.log(res)
+           setTimeout(()=>{
+            const todoItem = {id:res.data.name, name: todoName}
+            // setTodoList(todoList.concat(todoItem))
+            setSubmittedTodo(todoItem)
+           }, 3000)
         })
         .catch(err=>{
             console.log(err)
