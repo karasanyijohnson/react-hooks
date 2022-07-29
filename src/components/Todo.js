@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const Todo = props => {
     const [todoName, setTodoName] = useState('');
-    const [submittedTodo, setSubmittedTodo] = useState(null)
+    // const [submittedTodo, setSubmittedTodo] = useState(null)
     // const [todoList, setTodoList] = useState([])
     // const [todoState, setTodoState] = useState({userInput:'', todoList:[]})
 
@@ -44,12 +44,12 @@ const Todo = props => {
             document.removeEventListener('mousemove', mouseMoveHandler)
         }
     }, [])
-    useEffect(
-        () => {
-            if (submittedTodo) {
-                dispatch({type:'ADD', payload: submittedTodo})
-            }
-        }, [submittedTodo]);
+    // useEffect(
+    //     () => {
+    //         if (submittedTodo) {
+    //             dispatch({type:'ADD', payload: submittedTodo})
+    //         }
+    //     }, [submittedTodo]);
     const inputChangeHandler = (event) => {
         setTodoName(event.target.value)
         // setTodoState({
@@ -64,7 +64,8 @@ const Todo = props => {
                 setTimeout(() => {
                     const todoItem = { id: res.data.name, name: todoName }
                     // setTodoList(todoList.concat(todoItem))
-                    setSubmittedTodo(todoItem)
+                    // setSubmittedTodo(todoItem)
+                    dispatch({type:'Add', payload:todoItem})
                 }, 3000)
             })
             .catch(err => {
@@ -74,6 +75,16 @@ const Todo = props => {
         //     userInput:todoState.userInput,
         //    todoList:todoState.todoList.concat(todoState.userInput) 
         // })
+    }
+    const todoRemoveHandler=(todoId)=>{
+        axios.delete(`https://test-2f0e9-default-rtdb.firebaseio.com/todos/${todoId}.json`)
+        .then((res)=>{
+            dispatch({type:'REMOVE',payload:todoId})
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+       
     }
     return <React.Fragment>
         <input
@@ -86,7 +97,7 @@ const Todo = props => {
         <button type='button' onClick={addTodoHundler}>Add</button>
         <ul>
             {todoList.map(todo =>
-                <li key={todo.id}>{todo.name}</li>
+                <li key={todo.id} onClick={todoRemoveHandler.bind(this, todo.id)}>{todo.name}</li>
             )}
             {/* {todoState.todoList.map(todo=>
                 <li key={todo}>{todo}</li>
