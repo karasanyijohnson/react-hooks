@@ -1,6 +1,7 @@
 // import React, { useState, useEffect, useReducer, useRef } from 'react';
 import React, {useEffect, useReducer, useRef } from 'react';
 import axios from 'axios'
+import List from './List'
 
 const Todo = props => {
     // const [todoName, setTodoName] = useState('');
@@ -39,12 +40,12 @@ const Todo = props => {
     const mouseMoveHandler = event => {
         console.log(event.clientX, event.clientY)
     }
-    useEffect(() => {
-        document.addEventListener("mousemove", mouseMoveHandler)
-        return () => {
-            document.removeEventListener('mousemove', mouseMoveHandler)
-        }
-    }, [])
+    // useEffect(() => {
+    //     document.addEventListener("mousemove", mouseMoveHandler)
+    //     return () => {
+    //         document.removeEventListener('mousemove', mouseMoveHandler)
+    //     }
+    // }, [])
     // useEffect(
     //     () => {
     //         if (submittedTodo) {
@@ -100,14 +101,7 @@ const Todo = props => {
         // value={todoState.userInput}
         />
         <button type='button' onClick={addTodoHundler}>Add</button>
-        <ul>
-            {todoList.map(todo =>
-                <li key={todo.id} onClick={todoRemoveHandler.bind(this, todo.id)}>{todo.name}</li>
-            )}
-            {/* {todoState.todoList.map(todo=>
-                <li key={todo}>{todo}</li>
-                ) } */}
-        </ul>
+        <List items={todoList} onClick={todoRemoveHandler}/>
     </React.Fragment>
 }
 
